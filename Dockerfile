@@ -1,35 +1,44 @@
-# Build Stage
-FROM node:18-alpine AS build
+# Stage 1: Build the application
+FROM node:17-alpine AS builder
 
-# Set the working directory
-WORKDIR /
-
-# Copy package.json and package-lock.json
+# Create app directory
+RUN mkdir -p /app
+WORKDIR /app
+# Install app dependencies by copying
+# package.json and package-lock.json
 COPY package*.json ./
 
-# Install npm dependencies
-RUN npm install -g npm@latest && npm install -g @ionic/cli && npm install
+# Install dependencies
+RUN npm ci
 
-# Copy the entire code repository to the container
+# Bundle app source
 COPY . .
 
-# Run the Ionic production build
-RUN ionic build --prod
+# # set arguments and env variables
+# ARG arg1
+# ARG arg2
 
-# Move the build output to a new location for the next stage
-# RUN mv /dist /dist
+# ENV ARG1=${arg1}
+# ENV ARG2=${arg2}
 
-# Production Stage
-FROM nginx:alpine
+RUN npm run build
+RUN npm prune --production
 
-# Copy the built files to the Nginx HTML directory
-COPY --from=build /dist /usr/share/nginx/html
+# Stage 2: Serve the app with Nginx
+# Recommendation: Use latest availabe version
+FROM nginxinc/nginx-unprivileged:alpine3.18-slim-test 
 
-# Set proper permissions for the files to be served
-RUN chmod -R 755 /usr/share/nginx/html
+WORKDIR /app
+COPY package.json .
 
-# Expose port 80 for HTTP traffic
+# Copy the build output to replace the default nginx contents.
+COPY --from=builder /dist /usr/share/nginx/html
+
+# Copy the custom nginx configuration file
+# COPY custom_nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 80 to the Docker host, so we can access it
+# from the outside.
 EXPOSE 80
 
-# Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]
