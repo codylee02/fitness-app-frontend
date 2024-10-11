@@ -16,11 +16,17 @@ COPY . .
 # Run the Ionic production build
 RUN ionic build --prod
 
-# Install a simple HTTP server for serving static files
-RUN npm install -g http-server
+# Remove all other directories except /dist
+RUN find / -mindepth 1 -maxdepth 1 ! -name 'dist' -exec rm -rf {} + && mv /dist/* /
 
-# Expose port 8080
-EXPOSE 8080
+# Production Stage
+FROM nginx:alpine
 
-# Start the HTTP server to serve the build output
-CMD ["http-server", "/dist", "-p", "8080"]
+# Copy the built files to the Nginx HTML directory
+COPY --from=build / /usr/share/nginx/html
+
+# Expose port 80 for HTTP traffic
+EXPOSE 80
+
+# Start Nginx server
+CMD ["nginx", "-g", "daemon off;"]
