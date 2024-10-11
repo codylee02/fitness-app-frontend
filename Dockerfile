@@ -32,7 +32,7 @@ WORKDIR /app
 COPY package.json .
 
 # Copy the build output to replace the default nginx contents.
-COPY --from=builder /dist /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Copy the custom nginx configuration file
 # COPY custom_nginx.conf /etc/nginx/conf.d/default.conf
