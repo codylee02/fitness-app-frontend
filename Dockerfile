@@ -16,22 +16,19 @@ COPY . .
 # Run the Ionic production build
 RUN ionic build --prod
 
-# Move the build output to a new location for the next stage
-# RUN mv /dist /dist
-
 # Production Stage
 FROM nginx:alpine
 
-# # Copy the built files to the Nginx HTML directory
+# Copy the built files to the Nginx HTML directory
 COPY --from=build /dist /usr/share/nginx/html
 
-# # Set proper permissions for the files to be served
-# RUN chmod -R 755 /usr/share/nginx/html
+# Set proper permissions for the files to be served
+RUN chmod -R 755 /usr/share/nginx/html
 
-# # Expose port 80 for HTTP traffic
+# Expose port 80 for HTTP traffic
 EXPOSE 80
 
-# # Start Nginx server
+# Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]
 
 # docker run -p 8080:80 --name fafe fafe_test
