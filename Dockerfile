@@ -2,7 +2,7 @@
 FROM node:18-alpine as build
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
@@ -23,4 +23,4 @@ RUN npm install -g http-server
 EXPOSE 8080
 
 # Start the HTTP server to serve the build output
-CMD ["http-server", "www", "-p", "8080"]
+CMD ["http-server", "/dist", "-p", "8080"]
