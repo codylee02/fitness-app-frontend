@@ -1,5 +1,5 @@
 # Build Stage
-FROM node:18-alpine as build
+FROM node:18-alpine AS build
 
 # Set the working directory
 WORKDIR /app
@@ -16,26 +16,11 @@ COPY . .
 # Run the Ionic production build
 RUN ionic build --prod
 
-# Move the build output to a new location for the next stage
-RUN mv /app/dist /dist
+# Install a simple HTTP server for serving static files
+RUN npm install -g http-server
 
-# Set permissions for the dist directory
-RUN chmod -R 755 /dist
+# Expose port 8080
+EXPOSE 8080
 
-# Production Stage
-FROM nginx:alpine
-
-# Copy the built files to the Nginx HTML directory
-COPY --from=build /dist /usr/share/nginx/html
-
-# Set proper permissions for the files to be served
-RUN chmod -R 755 /usr/share/nginx/html
-
-# Expose port 80 for HTTP traffic
-EXPOSE 80
-
-# Healthcheck to ensure the server is running properly
-HEALTHCHECK CMD curl --fail http://localhost:80 || exit 1
-
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+# Start the HTTP server to serve the build output from the /app/dist directory
+CMD ["http-server", "/app/dist", "-p", "8080"]
