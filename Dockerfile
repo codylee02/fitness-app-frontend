@@ -16,4 +16,11 @@ COPY . .
 # Run the Ionic production build
 RUN ionic build --prod
 
-# The build output is in /app/www which can be deployed directly to a platform like Railway
+# Install a simple HTTP server for serving static files
+RUN npm install -g http-server
+
+# Expose port 8080
+EXPOSE 8080
+
+# Start the HTTP server to serve the build output
+CMD ["http-server", "www", "-p", "8080"]
