@@ -1,5 +1,5 @@
 # Build Stage
-FROM node:18-alpine as build
+FROM node:18-alpine AS build
 
 # Set the working directory
 WORKDIR /
@@ -17,7 +17,7 @@ COPY . .
 RUN ionic build --prod
 
 # Move the build output to a new location for the next stage
-RUN mv /dist /dist
+# RUN mv /dist /dist
 
 # Production Stage
 FROM nginx:alpine
