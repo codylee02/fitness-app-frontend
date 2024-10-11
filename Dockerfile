@@ -2,7 +2,7 @@
 FROM node:18-alpine AS build
 
 # Set the working directory
-WORKDIR /
+WORKDIR /app
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
@@ -16,14 +16,14 @@ COPY . .
 # Run the Ionic production build
 RUN ionic build --prod
 
-# Remove all other directories except /dist
-RUN find / -mindepth 1 -maxdepth 1 ! -name 'dist' -exec rm -rf {} + && mv /dist/* /
+# Move the build output to a new location for the next stage
+RUN mv /app/dist /dist
 
 # Production Stage
 FROM nginx:alpine
 
 # Copy the built files to the Nginx HTML directory
-COPY --from=build / /usr/share/nginx/html
+COPY --from=build /dist /usr/share/nginx/html
 
 # Expose port 80 for HTTP traffic
 EXPOSE 80
