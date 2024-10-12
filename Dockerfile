@@ -22,6 +22,9 @@ FROM nginx:alpine
 # Copy the built files to the Nginx HTML directory
 COPY --from=build /dist /usr/share/nginx/html
 
+# Copy custom Nginx configuration file
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Set proper permissions for the files to be served
 RUN chmod -R 755 /usr/share/nginx/html
 
