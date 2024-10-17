@@ -1,5 +1,5 @@
 {
-  "name": "fitness-app-frontend",
+  "name": "fafe",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -10,8 +10,8 @@
     "test.e2e": "cypress run",
     "test.unit": "vitest",
     "lint": "eslint",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "ionic:build": "npm run build",
+    "ionic:serve": "npm run dev -- --open"
   },
   "dependencies": {
     "@capacitor/android": "6.1.2",
@@ -29,20 +29,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^5.3.4",
-    "react-router-dom": "^5.3.4",
-    "serve": "^14.2.3"
+    "react-router-dom": "^5.3.4"
   },
   "devDependencies": {
     "@capacitor/cli": "6.1.2",
-    "@chromatic-com/storybook": "^1.9.0",
-    "@storybook/addon-essentials": "^8.3.2",
-    "@storybook/addon-interactions": "^8.3.2",
-    "@storybook/addon-links": "^8.3.2",
-    "@storybook/addon-onboarding": "^8.3.2",
-    "@storybook/blocks": "^8.3.2",
-    "@storybook/react": "^8.3.2",
-    "@storybook/react-vite": "^8.3.2",
-    "@storybook/test": "^8.3.2",
     "@testing-library/dom": ">=7.21.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
@@ -54,14 +44,10 @@
     "cypress": "^13.5.0",
     "eslint": "^8.35.0",
     "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-storybook": "^0.8.0",
     "jsdom": "^22.1.0",
-    "storybook": "^8.3.2",
     "terser": "^5.4.0",
     "typescript": "^5.1.6",
     "vite": "~5.2.0",
-    "vite-plugin-pwa": "^0.20.5",
     "vitest": "^0.34.6"
-  },
-  "description": "An Ionic project"
+  }
 }

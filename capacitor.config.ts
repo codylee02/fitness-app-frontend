@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'fitness-app-frontend',
+  appId: 'ionic.fafe',
+  appName: 'fafe',
   webDir: 'dist'
 };
 
